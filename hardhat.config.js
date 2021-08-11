@@ -6,6 +6,7 @@ require("@nomiclabs/hardhat-truffle5");
 require("@nomiclabs/hardhat-waffle");
 require("@nomiclabs/hardhat-etherscan");
 require('hardhat-contract-sizer');
+require('hardhat-deploy');
 
 require('dotenv').config();
 
@@ -22,11 +23,20 @@ task("accounts", "Prints the list of accounts", async () => {
 module.exports = {
   defaultNetwork: "hardhat",
   solidity: "0.6.12",
+  namedAccounts: {
+    deployer: {
+      default: 0
+    }
+  },
   networks: {
     testnet: {
       url: process.env.BSC_TESTNET_RPC,
       chainId: 97,
-      accounts: {mnemonic: process.env.MNEMONIC}
+      // accounts: {mnemonic: process.env.MNEMONIC},
+      accounts: [process.env.PRIVATE_KEY],
+      live: true,
+      saveDeployments: true,
+      tags: ['staging']
     }
   },
   settings: {
