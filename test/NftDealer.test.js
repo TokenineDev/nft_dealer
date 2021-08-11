@@ -44,6 +44,29 @@ describe("NftDealer", function () {
     });
   });
 
+  describe("withdraw", async function() {
+    it("should transfer all NFT from contract to receiver", async function() {
+      for(let i=0; i<10; i++) {
+        await nft.newItem(dealer.address);
+      }
+      await expect(dealer.withdraw(bob, {from:bob})).revertedWith("caller is not the owner");
+      await dealer.withdraw(bob);
+      expect((await nft.balanceOf(dealer.address)).toString()).to.eq("0");
+      expect((await nft.balanceOf(bob)).toString()).to.eq("10");
+    });
+
+    it("should transfer the specific NFT from contract to receiver", async function() {
+      for(let i=0; i<10; i++) {
+        await nft.newItem(dealer.address);
+      }
+      await dealer.withdraw(bob, 1);
+      expect((await nft.balanceOf(dealer.address)).toString()).to.eq("9");
+      expect((await nft.balanceOf(bob)).toString()).to.eq("1");
+
+      await expect(dealer.withdraw(bob, 100)).revertedWith("operator query for nonexistent token");
+    })
+  });
+
   describe("buy", async function() {
     it("should not transfer nft to caller if token amount is not enough", async function() {
       await busdToken.mint(bob, toWei("1"));

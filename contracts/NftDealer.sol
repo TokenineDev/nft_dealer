@@ -44,6 +44,20 @@ contract NftDealer is Ownable {
         buy(msg.sender);
     }
 
+    function withdraw(address _receiver) external onlyOwner {
+        require(_receiver != address(0));
+        uint256 nftAmount = nft.balanceOf(address(this));
+        for(uint256 i; i < nftAmount; i++) {
+            uint256 tokenId = nft.tokenOfOwnerByIndex(address(this), 0);
+            nft.safeTransferFrom(address(this), _receiver, tokenId);
+        }
+    }
+
+    function withdraw(address _receiver, uint256 _tokenId) external onlyOwner {
+        require(_receiver != address(0));
+        nft.safeTransferFrom(address(this), _receiver, _tokenId);
+    }
+
     function setAmount(uint256 _amount) external onlyOwner {
         require(_amount != amount);
         amount = _amount;
