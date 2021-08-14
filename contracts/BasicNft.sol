@@ -13,11 +13,13 @@ contract BasicNft is ERC721, Ownable {
     constructor() public ERC721("Basic NFT", "NFT") {}
 
     function newItem(
-        address player        
+        address player,
+        string memory tokenURI
     ) external onlyOwner returns (uint256) {
         tokenIds.increment();
         uint256 newItemId = tokenIds.current();
         _mint(player, newItemId);
+        _setTokenURI(newItemId, tokenURI);
         return newItemId;
     }
 
