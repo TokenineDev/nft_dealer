@@ -29,5 +29,5 @@ npx hardhat deploy --network testnet
 
 ## Verify on BSC testnet
 ```bash
-npx hardhat --network bsc-testnet etherscan-verify --solc-input --license <YOUR-LICENSE-SPDX-CODE> 
+npx hardhat --network testnet etherscan-verify --solc-input --license <YOUR-LICENSE-SPDX-CODE> 
 ```
