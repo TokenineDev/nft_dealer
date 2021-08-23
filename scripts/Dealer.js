@@ -4,7 +4,7 @@ const toWei = web3.utils.toWei;
 module.exports = async function ({ getNamedAccounts, deployments }) {
   if(network.tags.staging) {
     const { deploy, log, execute } = deployments
-    const { deployer } = await getNamedAccounts()
+    const { deployer, acceptToken, nftAddress } = await getNamedAccounts()
     const busdToken = await deployments.get('BasicToken')
     const basicNFT = await deployments.get('BasicNft')
     const dealer = await deploy('NftDealer', {
@@ -13,6 +13,19 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
         busdToken.address,
         toWei('10'),
         basicNFT.address,
+        deployer
+      ]
+    })
+    if (dealer.newlyDeployed) {
+      log(`contract NftDealer deployed at ${dealer.address} using ${dealer.receipt.gasUsed} gas`); 
+    }
+  } else if (network.tags.production) {
+    const dealer = await deploy('NftDealer', {
+      from: deployer,
+      args: [
+        acceptToken,
+        toWei('10'),
+        nftAddress,
         deployer
       ]
     })

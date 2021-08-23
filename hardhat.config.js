@@ -26,7 +26,9 @@ module.exports = {
   namedAccounts: {
     deployer: {
       default: 0
-    }
+    },
+    acceptToken: process.env.ACCEPT_TOKEN,
+    nftAddress: process.env.NFT_ADDRESS
   },
   networks: {
     testnet: {
@@ -37,6 +39,15 @@ module.exports = {
       live: true,
       saveDeployments: true,
       tags: ['staging']
+    },
+    mainnet: {
+      url: process.env.BSC_RPC,
+      chainId: 56,
+      // accounts: {mnemonic: process.env.MNEMONIC},
+      accounts: [process.env.PRIVATE_KEY_MAINNET],
+      live: true,
+      saveDeployments: true,
+      tags: ['production']
     }
   },
   settings: {
