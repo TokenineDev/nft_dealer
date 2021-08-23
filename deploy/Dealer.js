@@ -2,9 +2,10 @@ require('dotenv').config();
 const { web3, artifacts } = require("hardhat");
 const toWei = web3.utils.toWei;
 module.exports = async function ({ getNamedAccounts, deployments }) {
+  const { deploy, log } = deployments
+  const { deployer, acceptToken, nftAddress } = await getNamedAccounts()
+
   if(network.tags.staging) {
-    const { deploy, log, execute } = deployments
-    const { deployer, acceptToken, nftAddress } = await getNamedAccounts()
     const busdToken = await deployments.get('BasicToken')
     const basicNFT = await deployments.get('BasicNft')
     const dealer = await deploy('NftDealer', {
@@ -33,6 +34,7 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
       log(`contract NftDealer deployed at ${dealer.address} using ${dealer.receipt.gasUsed} gas`); 
     }
   }
+  
 }
 module.exports.tags = ["Dealer"]
 module.exports.dependencies = ['BUSDToken', 'BasicNft']
