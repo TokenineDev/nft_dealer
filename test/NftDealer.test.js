@@ -47,7 +47,7 @@ describe("NftDealer", function () {
   describe("withdraw", async function() {
     it("should transfer all NFT from contract to receiver", async function() {
       for(let i=0; i<10; i++) {
-        await nft.newItem(dealer.address);
+        await nft.newItem(dealer.address, "");
       }
       await expect(dealer.withdraw(bob, {from:bob})).revertedWith("caller is not the owner");
       await dealer.withdraw(bob);
@@ -57,7 +57,7 @@ describe("NftDealer", function () {
 
     it("should transfer the specific NFT from contract to receiver", async function() {
       for(let i=0; i<10; i++) {
-        await nft.newItem(dealer.address);
+        await nft.newItem(dealer.address, "");
       }
       await dealer.withdraw(bob, 1);
       expect((await nft.balanceOf(dealer.address)).toString()).to.eq("9");
@@ -71,7 +71,7 @@ describe("NftDealer", function () {
     it("should not transfer nft to caller if token amount is not enough", async function() {
       await busdToken.mint(bob, toWei("1"));
       for(let i=0; i<10; i++) {
-        await nft.newItem(dealer.address);
+        await nft.newItem(dealer.address, "");
       }
       await busdToken.approve(dealer.address, busdAmount, {from:bob});
       await expect(dealer.buy({from:bob})).revertedWith("transfer amount exceeds balance");
@@ -82,7 +82,7 @@ describe("NftDealer", function () {
       await busdToken.mint(marry, busdAmount);
       await busdToken.mint(john, busdAmount);
       for(let i=0; i<2; i++) {
-        await nft.newItem(dealer.address);
+        await nft.newItem(dealer.address, "");
       }
       await busdToken.approve(dealer.address, busdAmount, {from:bob});
       await busdToken.approve(dealer.address, busdAmount, {from:marry});
@@ -98,7 +98,7 @@ describe("NftDealer", function () {
       await busdToken.mint(marry, busdAmount);
       await busdToken.mint(john, busdAmount);
       for(let i=0; i<10; i++) {
-        await nft.newItem(dealer.address);
+        await nft.newItem(dealer.address, "");
       }      
       await busdToken.approve(dealer.address, busdAmount, {from:bob});
       await busdToken.approve(dealer.address, busdAmount, {from:marry});
